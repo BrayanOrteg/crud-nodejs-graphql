@@ -43,6 +43,7 @@ A continuación se listan las funcionalidades del sistema y la forma de utilizar
 
 Dos tipos de usuario se pueden logear en la aplicación: "USER" y "SUPERADMIN", a continuación se ve el logeo de un usuario administrador ya registrado:
 
+![image](https://github.com/user-attachments/assets/926f9de4-7820-4414-9a14-5eaaa03bf5fa)
 
 
 Esto devuelve un token que deberá ser colocado en el header para realizar el resto de operaciones, se hace se la siguiente manera:
