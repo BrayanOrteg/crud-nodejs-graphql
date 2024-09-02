@@ -12,7 +12,7 @@ router.post('/', validateSchema(userSchema),auth, AdminAuth, userController.crea
 
 router.post("/login", userController.login)
 
-router.get('/', userController.getAll);
+router.get('/',auth, UserAuth, userController.getAll);
 
 router.get('/:id', auth, UserAuth, userController.getUser);
 
