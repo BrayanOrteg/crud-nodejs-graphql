@@ -20,12 +20,6 @@ router.get('/',auth, UserAuth, userController.getAll);
 // Ruta para obtener un usuario específico por ID
 router.get('/:id', auth, UserAuth, userController.getUser);
 
-router.get('/:id/group/:groupId', (req: Request, res: Response) => {
-    res.send(`Get user with id: ${req.params.id} y group ID: ${req.params.groupId}`);
-});
-
-//router.get('/:profile', auth,  userController.getUser);
-
 // Ruta para actualizar un usuario específico por ID
 router.put('/:id',auth, AdminAuth, userController.update);
 
