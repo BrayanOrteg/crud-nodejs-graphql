@@ -22,7 +22,7 @@ app.use('/api/reactions',routerReactions)
 
 
 app.get('/', (req: Request, res: Response) => {
-    res.send('AAAAAAAAAAAAAAAAAAAAa');
+    res.send('La app se está ejecutando');
 });
 
 

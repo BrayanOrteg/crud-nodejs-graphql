@@ -18,7 +18,7 @@ app.use('/api/users', users_router_1.router);
 app.use('/api/comments', comment_router_1.routerComment);
 app.use('/api/reactions', reaction_router_1.routerReactions);
 app.get('/', (req, res) => {
-    res.send('AAAAAAAAAAAAAAAAAAAAa');
+    res.send('La app se está ejecutando');
 });
 db_1.db.then(() => app.listen(PORT, () => {
     console.log(`server running on http://localhost:${PORT}`);
