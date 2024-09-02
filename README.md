@@ -47,61 +47,124 @@ Dos tipos de usuario se pueden logear en la aplicación: "USER" y "SUPERADMIN", 
 
 Esto devuelve un token que deberá ser colocado en el header para realizar el resto de operaciones, se hace se la siguiente manera:
 
+![image](https://github.com/user-attachments/assets/f405d4f2-2f37-4873-a924-739b438bc72d)
+
+Dentro del postman se debe ingresar a la carpeta de mayor nivel (CRUD nodeJs) e ir al apartado de variables, ahí se cambia el valor de current value
 
 #### Gestión de Usuarios
 
 Como "SUPERADMIN" se pueden crear usuarios con "name", "email", "password" y "role", si no se selecciona un rol de los mencionados se asignará por defecto como usuario normal, este es un ejemplo:
 
-
+```
+{
+        "name": "pedro fernandez",
+        "email": "pedroaa@email.com", // para crear un nuevo usuario cambia el email
+        "password": "1234a5678",
+        "role": "USER"
+}
+```
 
 También puede eliminarlos así:
+![image](https://github.com/user-attachments/assets/a7a8ce18-26d4-4a4b-915a-6630a33ff156)
 
 
 
 Como "SUPERADMIN" o "USER" se pueden ver todos los usuarios registrados así
 
+```
+https://crud-nodejs-214f-jcf1i3b3f-salazqs-projects.vercel.app/api/users
+```
 
 O ver solo un usuario así:
 
-
+```
+https://crud-nodejs-214f-jcf1i3b3f-salazqs-projects.vercel.app/api/users/66d5f5c834822a6e553a7fcc
+```
 
 #### Gestión de Comentarios
 
 Todos los usuarios pueden crear comentarios con un atributo "comment" asÍ:
 
+```
+{
+        "comment": "Amo a Pedro mucho"
+}
+```
 
 El sistema toma el id del usuario que lo creó (a través del token) y lo asocia con el comentario, que además se crea con un arreglo de "replies", "reactions" y un "parentCommentId" vacios.
 
 
 El usuario que creó un comentario puede editarlo:
 
+```
+// url con el id del comentario a editar
+https://crud-nodejs-214f-ms9bklbed-salazqs-projects.vercel.app/api/comments/66d5fdf23a409a52515a17b8
+
+// cuerpo que se envia para editar el cometnario
+
+{
+        "comment": "Ahora si amo a Pedro"
+}
+```
+
 
 O eliminarlo:
+
+![image](https://github.com/user-attachments/assets/c1f80485-f076-4f96-8bd6-792ffaa5c1ba)
 
 
 Y cualquier usuario puede ver la lista de comentarios o uno en especificó así:
 
+```
+// Lista de todos los comentarios
+https://crud-nodejs-214f-ms9bklbed-salazqs-projects.vercel.app/api/comments
+
+// Comentario espeficado con id
+https://crud-nodejs-214f-ms9bklbed-salazqs-projects.vercel.app/api/comments/66d5fd8a3a409a52515a17b5
+```
 
 Un usuario también puede responder a otro comentario al agregar el atributo "parentCommentId" al momento de la creación:
 
+```
+{
+        "comment": "Ya no amo a Pedro segundaaa",
+        "parentCommentId": "66d5fd8a3a409a52515a17b5" // id del comentario al que responde
+}
+```
 
 Esto añade la respuesta al arreglo de "replies" del comentario padre.
+
+![image](https://github.com/user-attachments/assets/3a50cb0b-d2a1-4991-85e0-9c673a5efed3)
 
 
 ### Reacciones a Comentarios
 
 Se puede reaccionar a un comentario para darle "LIKE", "DISLIKE", "LOVE" o "HATE" (solo estas son entradas validas) de la siguiente forma:
 
+```
+{
+    "tag": "LIKE",
+    "commentId": "66d5fd8a3a409a52515a17b5" // Id del comentario al que se va a asignar la reaccion
+}
+```
 
 El id del usuario que hizo la reacción se asocia mediante el token y el id de la reacción es agregado a la lista de "reactions" del comentario seleccionado.
 
 
 El usuario que creó la reacción puede eliminarla:
 
+![image](https://github.com/user-attachments/assets/0fad7ee5-0ffa-4b47-92ef-dc21b77af2f8)
 
 
 Y cualquier usuario puede ver todas o una reacción específica:
 
+```
+// Lista de todas las reacciones
+https://crud-nodejs-214f-ms9bklbed-salazqs-projects.vercel.app/api/reactions
+
+// Reaccion especificado por id
+https://crud-nodejs-214f-ms9bklbed-salazqs-projects.vercel.app/api/reactions/66d60777c399536575834e8c
+```
 
 ### Autenticación y Autorización
 
@@ -115,7 +178,7 @@ Donde "auth" se encarga de desencriptar el token y verificar que no ha expirado 
 
 ## Archivos relevantes
 
-- Puede ver un json con los comandos de Postman en: **poner ruta**
+- Puede ver un json con los comandos de Postman en: `./CRUD nodeJs.postman_collection`
 - Puede ver los esquemas y validaciones de entrada en: `src/schemas`
 - Puede ver los modelos y validaciones de datos en: `src/models`
 - Puede ver la autenticación y autorización en: `src/middlewares`
