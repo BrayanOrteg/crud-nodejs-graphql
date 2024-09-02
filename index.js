@@ -5,10 +5,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
-const users_router_1 = require("./routes/users.router");
-const comment_router_1 = require("./routes/comment.router");
-const db_1 = require("./config/db");
-const reaction_router_1 = require("./routes/reaction.router");
+const users_router_1 = require("./src/routes/users.router");
+const comment_router_1 = require("./src//routes/comment.router");
+const db_1 = require("./src/config/db");
+const reaction_router_1 = require("./src//routes/reaction.router");
 const app = (0, express_1.default)();
 dotenv_1.default.config();
 const PORT = process.env.PORT || 8000;
