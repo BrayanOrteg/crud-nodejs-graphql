@@ -3,7 +3,7 @@ import {enum as zEnum} from "zod/lib/types";
 import reactionSchema from "./reaction.schema";
 
 
-
+// Define el esquema para la validación de comentarios
 const commentSchema = object({
 
     comment: string({ required_error: "Comment is required" })
@@ -20,7 +20,7 @@ const commentSchema = object({
 // Exportar el esquema completo
 export default commentSchema;
 
-// Exportar el tipo del esquema
+
 export type CommentInput = TypeOf<typeof commentSchema>;
 
 

@@ -1,17 +1,21 @@
 import mongoose from 'mongoose';
 
-
+// Define la interfaz para el input de una reacción
 export interface ReactionInput {
-    tag: string;
-    commentId?: mongoose.Types.ObjectId;
-    userId: mongoose.Types.ObjectId;
+    tag: string; // Tipo de reacción (por ejemplo hasta el momento son, 'LIKE', 'DISLIKE', 'LOVE','HATE')
+    commentId?: mongoose.Types.ObjectId; // ID del comentario al que se aplica la reacción
+    userId: mongoose.Types.ObjectId; // ID del usuario que hizo la reacción
 }
 
+// Define la interfaz para el documento de la reacción
 export interface ReactionDocument extends ReactionInput, mongoose.Document {
+
+    // Fechas auto-generadas por mongoose
     createdAt: Date;
     updatedAt: Date;
 }
 
+// Define el esquema de Mongoose para el modelo de reacción
 const reactionSchema = new mongoose.Schema({
     tag: {type: String, required: true, default: 'LIKE'},
     commentId: { type: mongoose.Schema.Types.ObjectId, ref: 'Comment', default: null, required:true},

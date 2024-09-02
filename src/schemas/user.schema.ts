@@ -1,6 +1,6 @@
 import { object, string, enum as zEnum } from 'zod';
 
-
+// Define el esquema para la validación de usuarios
 const userSchema = object({
     name: string({required_error: "Name is required"}),
     email: string({required_error: "Email is required"})
@@ -10,5 +10,6 @@ const userSchema = object({
     role: zEnum(['USER', 'SUPERADMIN']).default('USER'),
 })
 
+// Exportar el schema completo
 export default userSchema;
    

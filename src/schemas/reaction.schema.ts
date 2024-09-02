@@ -1,5 +1,6 @@
 import { object, string, enum as zEnum } from 'zod';
 
+// Define el esquema para la validación de reacciones
 const reactionSchema = object({
 
     tag:  zEnum(['LIKE', 'LOVE', 'DISLIKE', 'HATE']).default('LIKE'),

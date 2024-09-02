@@ -9,11 +9,11 @@ import {ObjectId} from "mongodb";
 
 class CommentController {
 
-
+    // Método para crear un nuevo comentario
     public async create(req: Request, res: Response) {
 
         try {
-
+            // Crea un objeto CommentInput desde la solicitud
             const commentInput: CommentInput = {
                 comment: req.body.comment,
                 replies: req.body.replies,
@@ -21,8 +21,10 @@ class CommentController {
                 userId: req.body.idUser,
             }
 
+            // Llama al servicio para crear el comentario y espera la respuesta
             const comment: CommentDocument = await CommentService.create(commentInput);
 
+            // Si el comentario tiene un comentario padre, actualiza la lista de respuestas del padre
             if (commentInput.parentCommentId != null){
 
                 const commentVerify : CommentDocument | null = await CommentService.findById(req.body.parentCommentId);
@@ -37,6 +39,7 @@ class CommentController {
                     commentVerify.replies.push(comment._id as mongoose.Types.ObjectId);
                 }
 
+                // Actualiza el comentario padre con la nueva lista de respuestas
                 const commentUpdated: CommentDocument | null = await CommentService.update(commentVerify.id,  commentVerify);
             }
 
@@ -49,10 +52,12 @@ class CommentController {
     }
 
 
+    // Método para actualizar un comentario existente
     public async update (req: Request, res: Response) {
 
         try{
 
+            // Crea un objeto CommentInput desde la solicitud
             const commentInput: CommentInput = {
                 comment: req.body.comment,
                 replies: req.body.replies,
@@ -60,6 +65,7 @@ class CommentController {
                 userId: req.body.idUser,
             }
 
+            // Verifica si el comentario existe
             const commentVerify : CommentDocument | null = await CommentService.findById( req.params.id);
 
             if (!commentVerify){
@@ -68,12 +74,14 @@ class CommentController {
                 return;
             }
 
+            // Verifica si el usuario tiene permisos para actualizar el comentario
             if (commentVerify.userId != req.body.idUser){
 
                 res.status(401).json({error: "Not authorized", message: `You are not authorized`})
                 return;
             }
 
+            // Llama al servicio para actualizar el comentario
             const comment: CommentDocument | null = await CommentService.update(req.params.id,  commentInput);
 
             res.json(comment);
@@ -84,11 +92,13 @@ class CommentController {
     }
 
 
+    // Método para eliminar un comentario
     public async delete (req: Request, res: Response) {
 
         try{
 
 
+            // Verifica si el comentario existe
             const commentVerify : CommentDocument | null = await CommentService.findById( req.params.id);
 
             if (!commentVerify){
@@ -97,6 +107,7 @@ class CommentController {
                 return;
             }
 
+            // Verifica si el usuario tiene permisos para eliminar el comentario
             if (commentVerify.userId != req.body.idUser){
 
                 res.status(401).json({error: "Not authorized", message: `You are not authorized to delete`})
@@ -104,6 +115,7 @@ class CommentController {
             }
 
 
+            // Si el comentario tiene un comentario padre, actualiza la lista de respuestas del padre
             if (commentVerify.parentCommentId != null){
                 const commentParent: CommentDocument | null = await CommentService.findById(commentVerify.parentCommentId as unknown as string);
 
@@ -111,10 +123,12 @@ class CommentController {
 
                     commentParent.replies = commentParent.replies.filter(id => !id.equals(new ObjectId(commentVerify.id)));
 
+                    // Actualiza el comentario padre con la lista de respuestas sin el comentario eliminado
                     const commentUpdated: CommentDocument | null = await CommentService.update(commentParent?.id,  commentParent);
                 }
             }
 
+            // Llama al servicio para eliminar el comentario
             const comment: CommentDocument | null = await CommentService.delete(req.params.id, req.body as CommentInput);
 
 
@@ -127,10 +141,12 @@ class CommentController {
     }
 
 
+    // Método para obtener un comentario por su ID
     public async getComment (req: Request, res: Response) {
 
         try{
 
+            // Llama al servicio para encontrar el comentario por ID
             const comment: CommentDocument | null = await CommentService.findById(req.params.id);
 
             if (!comment){
@@ -148,10 +164,12 @@ class CommentController {
     }
 
 
+    // Método para obtener todos los comentarios
     public async getAll (req: Request, res: Response) {
 
         try{
 
+            // Llama al servicio para encontrar todos los comentarios
             const comments: CommentDocument[] | null = await CommentService.findAll();
             if (!comments){
 
