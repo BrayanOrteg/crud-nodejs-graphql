@@ -1,0 +1,1195 @@
+{
+	"info": {
+		"_postman_id": "6265262b-901e-4223-b98f-1262578b7e9e",
+		"name": "CRUD nodeJs",
+		"description": "Para correr todos los llamados puestos en esta carpeta primero se necesita correr el Login y copiar el Token dado por la respuesta del servidor. Este Token se debe colocar en el apartado de variables donde hay una variable llamada \"token\", a esta variable se le debe cambiar el current value por el Token dado en la respuesta del server al hacer el Login.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37433479"
+	},
+	"item": [
+		{
+			"name": "Usuarios",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\n    \"email\": \"admin@gmail.com\",\n    \"password\": \"admin1234\"\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://crud-nodejs-214f-jcf1i3b3f-salazqs-projects.vercel.app/api/users/login",
+							"protocol": "https",
+							"host": [
+								"crud-nodejs-214f-jcf1i3b3f-salazqs-projects",
+								"vercel",
+								"app"
+							],
+							"path": [
+								"api",
+								"users",
+								"login"
+							]
+						},
+						"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+					},
+					"response": []
+				},
+				{
+					"name": "crear usuario",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"name\": \"pedro fernandez\",\r\n        \"email\": \"pedroaa@email.com\", // para crear un nuevo usuario cambia el email\r\n        \"password\": \"1234a5678\",\r\n        \"role\": \"USER\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://crud-nodejs-214f-jcf1i3b3f-salazqs-projects.vercel.app/api/users",
+							"protocol": "https",
+							"host": [
+								"crud-nodejs-214f-jcf1i3b3f-salazqs-projects",
+								"vercel",
+								"app"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "crear usuario Copy",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"name\": \"Pepe Perez\",\r\n        \"email\": \"Pepezz@email.com\",\r\n        \"password\": \"Pepe12344\",\r\n        \"role\": \"USER\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://crud-nodejs-214f-jcf1i3b3f-salazqs-projects.vercel.app/api/users",
+							"protocol": "https",
+							"host": [
+								"crud-nodejs-214f-jcf1i3b3f-salazqs-projects",
+								"vercel",
+								"app"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener usuarios",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://crud-nodejs-214f-jcf1i3b3f-salazqs-projects.vercel.app/api/users",
+							"protocol": "https",
+							"host": [
+								"crud-nodejs-214f-jcf1i3b3f-salazqs-projects",
+								"vercel",
+								"app"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						},
+						"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener usuario por id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://crud-nodejs-214f-jcf1i3b3f-salazqs-projects.vercel.app/api/users/66d5f5c834822a6e553a7fcc",
+							"protocol": "https",
+							"host": [
+								"crud-nodejs-214f-jcf1i3b3f-salazqs-projects",
+								"vercel",
+								"app"
+							],
+							"path": [
+								"api",
+								"users",
+								"66d5f5c834822a6e553a7fcc"
+							]
+						},
+						"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar usuario",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful PUT request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"name\": \"Pedro Rodriguez\", //cambiamos el nombre\n        \"email\": \"pedroaa@email.com\",\n        \"password\": \"1234a5678\",\n        \"role\": \"USER\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://crud-nodejs-214f-jcf1i3b3f-salazqs-projects.vercel.app/api/users/66d5f5c834822a6e553a7fcc",
+							"protocol": "https",
+							"host": [
+								"crud-nodejs-214f-jcf1i3b3f-salazqs-projects",
+								"vercel",
+								"app"
+							],
+							"path": [
+								"api",
+								"users",
+								"66d5f5c834822a6e553a7fcc"
+							]
+						},
+						"description": "This is a PUT request and it is used to overwrite an existing piece of data. For instance, after you create an entity with a POST request, you may want to modify that later. You can do that using a PUT request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful PUT request typically returns a `200 OK`, `201 Created`, or `204 No Content` response code."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete usuario",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful DELETE request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 202, 204]);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://crud-nodejs-214f-jcf1i3b3f-salazqs-projects.vercel.app/api/users/66d5feedf413539bf286db7e",
+							"protocol": "https",
+							"host": [
+								"crud-nodejs-214f-jcf1i3b3f-salazqs-projects",
+								"vercel",
+								"app"
+							],
+							"path": [
+								"api",
+								"users",
+								"66d5feedf413539bf286db7e"
+							]
+						},
+						"description": "This is a DELETE request, and it is used to delete data that was previously created via a POST request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful DELETE request typically returns a `200 OK`, `202 Accepted`, or `204 No Content` response code."
+					},
+					"response": []
+				}
+			],
+			"description": "Para el manejo de las api de usuario se haran desde el rol de Admin.\n\nEn el caso del delete es necesario que se corra primero el obtener usuarios y darle el id del usuario que se desea eliminar. Aqui deja la indicacion del cambio que se debe de hacer en la url en caso de que el usuario puesto en esta ya no exista:\n\n- StartFragment[https://crud-nodejs-214f-jcf1i3b3f-salazqs-projects.vercel.app/api/users/{Aqui](https://StartFragmenthttps://crud-nodejs-214f-jcf1i3b3f-salazqs-projects.vercel.app/api/users/{Aqui)](https://crud-nodejs-214f-jcf1i3b3f-salazqs-projects.vercel.app/api/users/%7BAqui%5D(https://StartFragmenthttps://crud-nodejs-214f-jcf1i3b3f-salazqs-projects.vercel.app/api/users/%7BAqui)) se pone el id del usuario}"
+		},
+		{
+			"name": "Comentarios",
+			"item": [
+				{
+					"name": "crear comentario",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"comment\": \"Amo a Pedro mucho\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://crud-nodejs-214f-ms9bklbed-salazqs-projects.vercel.app/api/comments",
+							"protocol": "https",
+							"host": [
+								"crud-nodejs-214f-ms9bklbed-salazqs-projects",
+								"vercel",
+								"app"
+							],
+							"path": [
+								"api",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "crear comentario 2",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"comment\": \"Ya no amo a Pedro\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://crud-nodejs-214f-ms9bklbed-salazqs-projects.vercel.app/api/comments",
+							"protocol": "https",
+							"host": [
+								"crud-nodejs-214f-ms9bklbed-salazqs-projects",
+								"vercel",
+								"app"
+							],
+							"path": [
+								"api",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "crear comentario 3",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"comment\": \"Ya no amo a Pedro segundaaa\",\r\n        \"parentCommentId\": \"66d5fd8a3a409a52515a17b5\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://crud-nodejs-214f-ms9bklbed-salazqs-projects.vercel.app/api/comments",
+							"protocol": "https",
+							"host": [
+								"crud-nodejs-214f-ms9bklbed-salazqs-projects",
+								"vercel",
+								"app"
+							],
+							"path": [
+								"api",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener comentarios",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://crud-nodejs-214f-ms9bklbed-salazqs-projects.vercel.app/api/comments",
+							"protocol": "https",
+							"host": [
+								"crud-nodejs-214f-ms9bklbed-salazqs-projects",
+								"vercel",
+								"app"
+							],
+							"path": [
+								"api",
+								"comments"
+							]
+						},
+						"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener comentario por id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://crud-nodejs-214f-ms9bklbed-salazqs-projects.vercel.app/api/comments/66d5fd8a3a409a52515a17b5",
+							"protocol": "https",
+							"host": [
+								"crud-nodejs-214f-ms9bklbed-salazqs-projects",
+								"vercel",
+								"app"
+							],
+							"path": [
+								"api",
+								"comments",
+								"66d5fd8a3a409a52515a17b5"
+							]
+						},
+						"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar comentario",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful PUT request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"comment\": \"Ahora si amo a Pedro\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://crud-nodejs-214f-ms9bklbed-salazqs-projects.vercel.app/api/comments/66d5fdf23a409a52515a17b8",
+							"protocol": "https",
+							"host": [
+								"crud-nodejs-214f-ms9bklbed-salazqs-projects",
+								"vercel",
+								"app"
+							],
+							"path": [
+								"api",
+								"comments",
+								"66d5fdf23a409a52515a17b8"
+							]
+						},
+						"description": "This is a PUT request and it is used to overwrite an existing piece of data. For instance, after you create an entity with a POST request, you may want to modify that later. You can do that using a PUT request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful PUT request typically returns a `200 OK`, `201 Created`, or `204 No Content` response code."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete comentario",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful DELETE request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 202, 204]);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://crud-nodejs-214f-ms9bklbed-salazqs-projects.vercel.app/api/comments/66d6060fc399536575834e83",
+							"protocol": "https",
+							"host": [
+								"crud-nodejs-214f-ms9bklbed-salazqs-projects",
+								"vercel",
+								"app"
+							],
+							"path": [
+								"api",
+								"comments",
+								"66d6060fc399536575834e83"
+							]
+						},
+						"description": "This is a DELETE request, and it is used to delete data that was previously created via a POST request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful DELETE request typically returns a `200 OK`, `202 Accepted`, or `204 No Content` response code."
+					},
+					"response": []
+				}
+			],
+			"description": "Para el manejo de las api de comentarios se haran desde el rol de Admin.  \nEn el caso del delete es necesario que se corra primero el obtener comentarios y darle el id del comentario que se desea eliminar. Aqui deja la indicacion del cambio que se debe de hacer en la url en caso de que el comentario puesto en esta ya no exista:\n\n- \\[StartFragment[https://crud-nodejs-214f-ms9bklbed-salazqs-projects.vercel.app/api/comments/{]](https://crud-nodejs-214f-ms9bklbed-salazqs-projects.vercel.app/api/comments/%7B%5D)([https://StartFragmenthttps://crud-nodejs-214f-ms9bklbed-salazqs-projects.vercel.app/api/comments/{ID](https://StartFragmenthttps://crud-nodejs-214f-ms9bklbed-salazqs-projects.vercel.app/api/comments/{ID) del comentario a eliminar})"
+		},
+		{
+			"name": "Reacciones",
+			"item": [
+				{
+					"name": "crear reaccion",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"tag\": \"LIKE\",\r\n    \"commentId\": \"66d5fd8a3a409a52515a17b5\" // Id del comentario al que se va a asignar la reaccion\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://crud-nodejs-214f-ms9bklbed-salazqs-projects.vercel.app/api/reactions",
+							"protocol": "https",
+							"host": [
+								"crud-nodejs-214f-ms9bklbed-salazqs-projects",
+								"vercel",
+								"app"
+							],
+							"path": [
+								"api",
+								"reactions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "crear reaccion 2",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"tag\": \"LOVE\",\r\n    \"commentId\": \"66d5fd8a3a409a52515a17b5\" // Id del comentario al que se va a asignar la reaccion\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://crud-nodejs-214f-ms9bklbed-salazqs-projects.vercel.app/api/reactions",
+							"protocol": "https",
+							"host": [
+								"crud-nodejs-214f-ms9bklbed-salazqs-projects",
+								"vercel",
+								"app"
+							],
+							"path": [
+								"api",
+								"reactions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "crear reaccion 3",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"tag\": \"DISLIKE\",\r\n    \"commentId\": \"66d5fd8a3a409a52515a17b5\" // Id del comentario al que se va a asignar la reaccion\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://crud-nodejs-214f-ms9bklbed-salazqs-projects.vercel.app/api/reactions",
+							"protocol": "https",
+							"host": [
+								"crud-nodejs-214f-ms9bklbed-salazqs-projects",
+								"vercel",
+								"app"
+							],
+							"path": [
+								"api",
+								"reactions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener reacciones",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://crud-nodejs-214f-ms9bklbed-salazqs-projects.vercel.app/api/reactions",
+							"protocol": "https",
+							"host": [
+								"crud-nodejs-214f-ms9bklbed-salazqs-projects",
+								"vercel",
+								"app"
+							],
+							"path": [
+								"api",
+								"reactions"
+							]
+						},
+						"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener reaccion por id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://crud-nodejs-214f-ms9bklbed-salazqs-projects.vercel.app/api/reactions/66d60777c399536575834e8c",
+							"protocol": "https",
+							"host": [
+								"crud-nodejs-214f-ms9bklbed-salazqs-projects",
+								"vercel",
+								"app"
+							],
+							"path": [
+								"api",
+								"reactions",
+								"66d60777c399536575834e8c"
+							]
+						},
+						"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete reaccion",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful DELETE request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 202, 204]);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://crud-nodejs-214f-ms9bklbed-salazqs-projects.vercel.app/api/reactions/66d607aec399536575834e91",
+							"protocol": "https",
+							"host": [
+								"crud-nodejs-214f-ms9bklbed-salazqs-projects",
+								"vercel",
+								"app"
+							],
+							"path": [
+								"api",
+								"reactions",
+								"66d607aec399536575834e91"
+							]
+						},
+						"description": "This is a DELETE request, and it is used to delete data that was previously created via a POST request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful DELETE request typically returns a `200 OK`, `202 Accepted`, or `204 No Content` response code."
+					},
+					"response": []
+				}
+			],
+			"description": "Para el manejo de las api de reacciones se haran desde el rol de Admin.  \nEn el caso del delete es necesario que se corra primero el obtener reacciones y darle el id de la reacciónque se desea eliminar. Aqui deja la indicacion del cambio que se debe de hacer en la url en caso de que la reacción puesto en esta ya no exista:\n\n- [StartFragmenthttps://crud-nodejs-214f-ms9bklbed-salazqs-projects.vercel.app/api/reactions/](https://StartFragmenthttps://crud-nodejs-214f-ms9bklbed-salazqs-projects.vercel.app/api/reactions/{id reaccion a elimnar})"
+		},
+		{
+			"name": "Mostrar informacion final",
+			"item": [
+				{
+					"name": "Obtener usuarios",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://crud-nodejs-214f-jcf1i3b3f-salazqs-projects.vercel.app/api/users",
+							"protocol": "https",
+							"host": [
+								"crud-nodejs-214f-jcf1i3b3f-salazqs-projects",
+								"vercel",
+								"app"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						},
+						"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener comentarios",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://crud-nodejs-214f-ms9bklbed-salazqs-projects.vercel.app/api/comments",
+							"protocol": "https",
+							"host": [
+								"crud-nodejs-214f-ms9bklbed-salazqs-projects",
+								"vercel",
+								"app"
+							],
+							"path": [
+								"api",
+								"comments"
+							]
+						},
+						"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener reacciones",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://crud-nodejs-214f-ms9bklbed-salazqs-projects.vercel.app/api/comments",
+							"protocol": "https",
+							"host": [
+								"crud-nodejs-214f-ms9bklbed-salazqs-projects",
+								"vercel",
+								"app"
+							],
+							"path": [
+								"api",
+								"comments"
+							]
+						},
+						"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "token",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
