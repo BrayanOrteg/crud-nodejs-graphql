@@ -17,9 +17,9 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Successful POST request\", function () {",
-									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
-									"});",
+									"var jsonData = pm.response.json();",
+									"let token = jsonData.token;",
+									"pm.collectionVariables.set(\"token\", token);",
 									""
 								],
 								"type": "text/javascript",
