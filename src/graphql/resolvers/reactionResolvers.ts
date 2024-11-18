@@ -1,3 +1,4 @@
+import { ApolloError } from 'apollo-server-errors';
 import ReactionService from '../../services/reaction.services';
 import CommentService from '../../services/comment.services';
 import { ReactionInput } from '../../models/reaction.model';
@@ -5,58 +6,82 @@ import { CommentDocument } from '../../models/comment.model';
 import { ObjectId } from 'mongodb';
 
 export const reactionResolvers = {
+
   Query: {
-    reactions: async () => await ReactionService.findAll(),
-    reaction: async (_: any, { id }: { id: string }) => await ReactionService.findById(id),
+
+    reactions: async () => {
+      try {
+        return await ReactionService.findAll();
+      } catch (error) {
+        throw new ApolloError('Error fetching reactions', 'INTERNAL_SERVER_ERROR');
+      }
+    },
+
+    reaction: async (_: any, { id }: { id: string }) => {
+      try {
+        const reaction = await ReactionService.findById(id);
+        if (!reaction) {
+          throw new ApolloError(`Reaction with id ${id} not found`, 'NOT_FOUND');
+        }
+        return reaction;
+      } catch (error) {
+        throw new ApolloError('Error fetching reaction', 'INTERNAL_SERVER_ERROR');
+      }
+    },
+
   },
+
+
   Mutation: {
-    createReaction: async (_: any, { tag, commentId, userId }: { tag: string, commentId: ObjectId, userId: ObjectId }) => {
-      const reactionInput: ReactionInput = { tag, commentId, userId };
 
-      // Verifica si el comentario relacionado con la reacción existe
-      const comment: CommentDocument | null = await CommentService.findById(commentId as unknown as string);
-      if (!comment) {
-        throw new Error(`Comment with id ${commentId} not found`);
+    createReaction: async (_: any, { tag, commentId }: { tag: string, commentId: ObjectId }, context: any) => {
+      try {
+        const userId = context.user.id;
+        const reactionInput: ReactionInput = { tag, commentId, userId };
+
+        const comment: CommentDocument | null = await CommentService.findById(commentId as unknown as string);
+        if (!comment) {
+          throw new ApolloError(`Comment with id ${commentId} not found`, 'NOT_FOUND');
+        }
+
+        const reaction = await ReactionService.create(reactionInput);
+        comment.reactions?.push(reaction.id);
+        await CommentService.update(comment.id, comment);
+
+        return reaction;
+      } catch (error) {
+        throw new ApolloError('Error creating reaction', 'INTERNAL_SERVER_ERROR');
       }
-
-      // Crea una nueva reacción usando el servicio de reacciones
-      const reaction = await ReactionService.create(reactionInput);
-
-      // Agrega el ID de la reacción a la lista de reacciones del comentario
-      comment.reactions?.push(reaction.id);
-
-      // Actualiza la lista de reacciones del comentario
-      await CommentService.update(comment.id, comment);
-
-      return reaction;
     },
-    deleteReaction: async (_: any, { id, userId }: { id: string, userId: string }) => {
-      // Verifica si la reacción existe
-      const reactionVerify = await ReactionService.findById(id);
-      if (!reactionVerify) {
-        throw new Error(`Reaction with id ${id} not found`);
-      }
 
-      // Verifica si el usuario tiene permisos para eliminar la reacción
-      if (reactionVerify.userId.toString() !== userId) {
-        throw new Error('Not authorized to delete this reaction');
-      }
+    deleteReaction: async (_: any, { id }: { id: string }, context: any) => {
+      try {
+        const userId = context.user.id;
+        const reactionVerify = await ReactionService.findById(id);
+        if (!reactionVerify) {
+          throw new ApolloError(`Reaction with id ${id} not found`, 'NOT_FOUND');
+        }
 
-      // Verifica si el comentario relacionado con la reacción existe
-      if (!reactionVerify.commentId) {
-        throw new Error('Comment ID is undefined');
-      }
-      const commentParent = await CommentService.findById(reactionVerify.commentId.toString());
-      if (commentParent?.reactions) {
-        // Elimina el ID de la reacción de la lista de reacciones del comentario
-        commentParent.reactions = commentParent.reactions.filter(reactionId => !reactionId.equals(new ObjectId(reactionVerify.id)));
+        if (reactionVerify.userId.toString() !== userId) {
+          throw new ApolloError('Not authorized to delete this reaction', 'UNAUTHORIZED');
+        }
 
-        // Actualiza el comentario
-        await CommentService.update(commentParent.id, commentParent);
-      }
+        if (!reactionVerify.commentId) {
+          throw new ApolloError('Comment ID is undefined', 'BAD_REQUEST');
+        }
 
-      // Elimina la reacción
-      return await ReactionService.delete(id);
+        const commentParent = await CommentService.findById(reactionVerify.commentId.toString());
+        if (commentParent?.reactions) {
+          commentParent.reactions = commentParent.reactions.filter(reactionId => !reactionId.equals(new ObjectId(reactionVerify.id)));
+          await CommentService.update(commentParent.id, commentParent);
+        }
+
+        return await ReactionService.delete(id);
+      } catch (error) {
+        throw new ApolloError('Error deleting reaction', 'INTERNAL_SERVER_ERROR');
+      }
     },
+
+    
   },
 };
