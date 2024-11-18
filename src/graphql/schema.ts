@@ -4,6 +4,9 @@ import { reactionResolvers } from './resolvers/reactionResolvers';
 
 import { gql } from 'apollo-server-express';
 
+
+
+
 export const typeDefs = gql`
   type User {
     id: ID!
@@ -52,6 +55,13 @@ export const typeDefs = gql`
     createReaction(tag: String!, commentId: ID!, userId: ID!): Reaction
     deleteReaction(id: ID!, userId: ID!): Reaction
     login(email: String!, password: String!): AuthPayload
+  }
+
+  fragment UserInfo on User {
+    id
+    name
+    email
+    role
   }
 `;
 
