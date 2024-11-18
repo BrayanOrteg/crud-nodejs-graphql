@@ -9,6 +9,9 @@ import { db } from './config/db';
 import userServices from './services/user.services';
 import auth from "./middlewares/auth";
 import userController from "./controller/user.controller";
+import { applyMiddleware } from 'graphql-middleware';
+import { permissions } from './graphql/permissions';
+import { makeExecutableSchema } from '@graphql-tools/schema';
 
 dotenv.config();
 
@@ -27,15 +30,28 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 });
 
 async function getContext({ req }: { req: Request }) {
-  const token = req.headers.authorization || '';
-  let user = null;
+
+  let user = { role: req.body.loggedUser, id: req.body.idUser };
   return { user };
 }
 
-// Configura Apollo Server
-const apolloServer = new ApolloServer({
+const schema = makeExecutableSchema({
   typeDefs,
   resolvers,
+});
+
+// Aplica las middleware de permisos al esquema
+const schemaWithMiddleware = applyMiddleware(schema, permissions);
+
+// Configura Apollo Server con el esquema modificado
+const apolloServer = new ApolloServer({
+  schema: schemaWithMiddleware, 
+  formatError: (error) => {
+
+    return {
+      message: error.message || 'Ha ocurrido un error',
+    };
+  },
 });
 
 const startServer = async () => {
