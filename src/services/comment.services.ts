@@ -64,7 +64,7 @@ class CommentService{
     }
 
     // Método para eliminar un comentario por ID
-    public async delete(id: string, commentInput: CommentInput): Promise<CommentDocument | null> {
+    public async delete(id: string): Promise<CommentDocument | null> {
 
         try{
 

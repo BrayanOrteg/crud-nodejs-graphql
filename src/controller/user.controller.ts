@@ -107,7 +107,7 @@ class UserController{
         try{
 
             // Elimina un usuario usando el servicio de usuarios
-            const user: UserDocument | null = await userServices.delete(req.params.id, req.body as UserInput);
+            const user: UserDocument | null = await userServices.delete(req.params.id);
 
             if (!user){
                 res.status(404).json({error: "not found", message: `User with id ${req.params.id} not found`})

@@ -129,7 +129,7 @@ class CommentController {
             }
 
             // Llama al servicio para eliminar el comentario
-            const comment: CommentDocument | null = await CommentService.delete(req.params.id, req.body as CommentInput);
+            const comment: CommentDocument | null = await CommentService.delete(req.params.id);
 
 
             res.json(comment);

@@ -136,7 +136,7 @@ class UserService{
     }
 
     // Método para eliminar un usuario por ID
-    public async delete(id: string, userInput: UserInput): Promise<UserDocument | null> {
+    public async delete(id: string): Promise<UserDocument | null> {
 
         try{
 

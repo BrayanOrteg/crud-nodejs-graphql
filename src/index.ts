@@ -1,34 +1,57 @@
-import express, { Express, Request, Response } from "express";
+import express, { Express, NextFunction, Request, Response } from "express";
 import dotenv from 'dotenv';
-import {router} from './routes/users.router';
-import {routerComment} from './routes/comment.router';
-import {db} from './config/db';
-import {routerReactions} from "./routes/reaction.router";
+import { ApolloServer } from '@apollo/server';
+import { expressMiddleware as apolloMiddleware } from '@apollo/server/express4';
+import cors from 'cors';
+import jwt from 'jsonwebtoken';
+import { typeDefs, resolvers } from './graphql/schema';
+import { db } from './config/db';
+import userServices from './services/user.services';
+import auth from "./middlewares/auth";
+import userController from "./controller/user.controller";
 
-
-const app: Express = express();
 dotenv.config();
 
-// Elige el puerto del archivo .env o usa el 8000
+const app: Express = express();
 const PORT = process.env.PORT || 8000;
 
+app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 
-// Las rutas que va a usar la app
-app.use('/api/users',router)
-app.use('/api/comments',routerComment)
-app.use('/api/reactions',routerReactions)
-
-
-app.get('/', (req: Request, res: Response) => {
-    res.send('La app se está ejecutando');
+app.use((req: Request, res: Response, next: NextFunction) => {
+  if (req.path === '/graphql' && req.body.operationName === 'Login') {
+    return next();
+  }
+  return auth(req, res, next);
 });
 
+async function getContext({ req }: { req: Request }) {
+  const token = req.headers.authorization || '';
+  let user = null;
+  return { user };
+}
 
-db.then(() =>
-    app.listen(PORT, ()=> {
-        console.log(`server running on http://localhost:${PORT}`);
+// Configura Apollo Server
+const apolloServer = new ApolloServer({
+  typeDefs,
+  resolvers,
+});
+
+const startServer = async () => {
+  await apolloServer.start();
+  app.use('/graphql', apolloMiddleware(apolloServer, { context: getContext }));
+
+  app.get('/', (req: Request, res: Response) => {
+    res.send('La app se está ejecutando');
+  });
+
+  db.then(() =>
+    app.listen(PORT, () => {
+      console.log(`Server running on http://localhost:${PORT}`);
+      console.log(`GraphQL endpoint: http://localhost:${PORT}/graphql`);
     })
-);
+  );
+};
 
+startServer();
