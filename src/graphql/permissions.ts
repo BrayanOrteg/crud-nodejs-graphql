@@ -9,7 +9,7 @@ const isAdmin = rule({ cache: 'contextual' })(
   }
 );
 
-// Regla para verificar si el usuario es un usuario normal
+// Regla para verificar si el usuario es un usuario normal o administrador
 const isUser = rule({ cache: 'contextual' })(
   async (parent, args, context, info: GraphQLResolveInfo) => {
     return  (context.user.role === 'USER' || context.user.role === 'SUPERADMIN');
@@ -39,6 +39,7 @@ export const permissions = shield({
   },
 },
 {
+  // Manejo de errores de permisos
   fallbackError: async (thrownThing, parent, args, context, info) => {
     if (thrownThing instanceof Error) {
       return thrownThing;

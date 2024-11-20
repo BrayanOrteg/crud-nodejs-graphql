@@ -1,12 +1,9 @@
 import { userResolvers } from './resolvers/userResolvers';
 import { commentResolvers } from './resolvers/commentResolvers';
 import { reactionResolvers } from './resolvers/reactionResolvers';
-
 import { gql } from 'apollo-server-express';
 
-
-
-
+// Define las definiciones de tipos de GraphQL
 export const typeDefs = gql`
   type User {
     id: ID!
@@ -65,6 +62,7 @@ export const typeDefs = gql`
   }
 `;
 
+// Combina los resolvers para diferentes tipos
 export const resolvers = {
   Query: {
     ...userResolvers.Query,
