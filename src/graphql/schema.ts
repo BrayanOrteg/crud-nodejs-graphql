@@ -46,11 +46,11 @@ export const typeDefs = gql`
     createUser(name: String!, email: String!, password: String!, role: String!): User
     updateUser(id: ID!, name: String, email: String, role: String): User
     deleteUser(id: ID!): User
-    createComment(comment: String!, userId: ID!, parentCommentId: ID): Comment
-    updateComment(id: ID!, comment: String!, userId: ID!, parentCommentId: ID): Comment
-    deleteComment(id: ID!, userId: ID!): Comment
-    createReaction(tag: String!, commentId: ID!, userId: ID!): Reaction
-    deleteReaction(id: ID!, userId: ID!): Reaction
+    createComment(comment: String!, parentCommentId: ID): Comment
+    updateComment(id: ID!, comment: String!, parentCommentId: ID): Comment
+    deleteComment(id: ID!): Comment
+    createReaction(tag: String!, commentId: ID!): Reaction
+    deleteReaction(id: ID!): Reaction
     login(email: String!, password: String!): AuthPayload
   }
 
