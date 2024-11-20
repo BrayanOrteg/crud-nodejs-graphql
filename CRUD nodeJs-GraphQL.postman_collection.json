@@ -1,8 +1,8 @@
 {
 	"info": {
-		"_postman_id": "6265262b-901e-4223-b98f-1262578b7e9e",
-		"name": "CRUD nodeJs",
-		"description": "Para correr todos los llamados puestos en esta carpeta primero se necesita correr el Login y copiar el Token dado por la respuesta del servidor. Este Token se debe colocar en el apartado de variables donde hay una variable llamada \"token\", a esta variable se le debe cambiar el current value por el Token dado en la respuesta del server al hacer el Login.",
+		"_postman_id": "9ecf5dd6-cd47-4a81-8619-3a131aae407c",
+		"name": "CRUD nodeJs-GraphQL",
+		"description": "Para correr todos los llamados puestos en esta carpeta primero se necesita correr el Login.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "37433479"
 	},
@@ -18,8 +18,8 @@
 							"script": {
 								"exec": [
 									"var jsonData = pm.response.json();",
-									"let token = jsonData.token;",
-									"pm.collectionVariables.set(\"token\", token);",
+									"let token = jsonData.data.login.token; ",
+									"pm.collectionVariables.set(\"token\", token); ",
 									""
 								],
 								"type": "text/javascript",
@@ -32,7 +32,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "    {\n    \"email\": \"admin@gmail.com\",\n    \"password\": \"admin1234\"\n    }",
+							"raw": "{\r\n  \"operationName\": \"Login\",\r\n  \"query\": \"mutation Login { login(email: \\\"admin@gmail.com\\\", password: \\\"admin1234\\\") { token user } }\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -40,17 +40,9 @@
 							}
 						},
 						"url": {
-							"raw": "https://crud-nodejs-214f-jcf1i3b3f-salazqs-projects.vercel.app/api/users/login",
-							"protocol": "https",
+							"raw": "{{base_url}}",
 							"host": [
-								"crud-nodejs-214f-jcf1i3b3f-salazqs-projects",
-								"vercel",
-								"app"
-							],
-							"path": [
-								"api",
-								"users",
-								"login"
+								"{{base_url}}"
 							]
 						},
 						"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
@@ -59,45 +51,21 @@
 				},
 				{
 					"name": "crear usuario",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{token}}",
-								"type": "text"
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"let userId = jsonData.data.createUser.id; // Accedemos al ID del usuario\r",
+									"pm.collectionVariables.set(\"userId\", userId); // Guardamos el ID en una variable de colección\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
 							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n        \"name\": \"pedro fernandez\",\r\n        \"email\": \"pedroaa@email.com\", // para crear un nuevo usuario cambia el email\r\n        \"password\": \"1234a5678\",\r\n        \"role\": \"USER\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://crud-nodejs-214f-jcf1i3b3f-salazqs-projects.vercel.app/api/users",
-							"protocol": "https",
-							"host": [
-								"crud-nodejs-214f-jcf1i3b3f-salazqs-projects",
-								"vercel",
-								"app"
-							],
-							"path": [
-								"api",
-								"users"
-							]
 						}
-					},
-					"response": []
-				},
-				{
-					"name": "crear usuario Copy",
+					],
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -111,25 +79,16 @@
 							}
 						],
 						"body": {
-							"mode": "raw",
-							"raw": "{\r\n        \"name\": \"Pepe Perez\",\r\n        \"email\": \"Pepezz@email.com\",\r\n        \"password\": \"Pepe12344\",\r\n        \"role\": \"USER\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation CreateUser {\r\n    createUser(name: \"pedro fernandez\", email: \"pedrobc@email.com\", password: \"1234a5678\", role: \"USER\") {\r\n        id\r\n        name\r\n        email\r\n        role\r\n    }\r\n}",
+								"variables": ""
 							}
 						},
 						"url": {
-							"raw": "https://crud-nodejs-214f-jcf1i3b3f-salazqs-projects.vercel.app/api/users",
-							"protocol": "https",
+							"raw": "{{base_url}}",
 							"host": [
-								"crud-nodejs-214f-jcf1i3b3f-salazqs-projects",
-								"vercel",
-								"app"
-							],
-							"path": [
-								"api",
-								"users"
+								"{{base_url}}"
 							]
 						}
 					},
@@ -151,14 +110,11 @@
 							}
 						}
 					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"auth": {
 							"type": "noauth"
 						},
-						"method": "GET",
+						"method": "POST",
 						"header": [
 							{
 								"key": "Authorization",
@@ -167,25 +123,16 @@
 							}
 						],
 						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
+							"mode": "graphql",
+							"graphql": {
+								"query": "query Users {\r\n    users {\r\n        id\r\n        name\r\n        email\r\n        role\r\n    }\r\n}",
+								"variables": ""
 							}
 						},
 						"url": {
-							"raw": "https://crud-nodejs-214f-jcf1i3b3f-salazqs-projects.vercel.app/api/users",
-							"protocol": "https",
+							"raw": "{{base_url}}",
 							"host": [
-								"crud-nodejs-214f-jcf1i3b3f-salazqs-projects",
-								"vercel",
-								"app"
-							],
-							"path": [
-								"api",
-								"users"
+								"{{base_url}}"
 							]
 						},
 						"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
@@ -212,7 +159,7 @@
 						"auth": {
 							"type": "noauth"
 						},
-						"method": "GET",
+						"method": "POST",
 						"header": [
 							{
 								"key": "Authorization",
@@ -220,18 +167,17 @@
 								"type": "text"
 							}
 						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query User($id: ID!) {\r\n  user(id: $id) {\r\n    id\r\n    name\r\n    email\r\n    role\r\n  }\r\n}",
+								"variables": "{\r\n  \"id\": \"{{userId}}\"\r\n}"
+							}
+						},
 						"url": {
-							"raw": "https://crud-nodejs-214f-jcf1i3b3f-salazqs-projects.vercel.app/api/users/66d5f5c834822a6e553a7fcc",
-							"protocol": "https",
+							"raw": "{{base_url}}",
 							"host": [
-								"crud-nodejs-214f-jcf1i3b3f-salazqs-projects",
-								"vercel",
-								"app"
-							],
-							"path": [
-								"api",
-								"users",
-								"66d5f5c834822a6e553a7fcc"
+								"{{base_url}}"
 							]
 						},
 						"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
@@ -259,7 +205,7 @@
 						"auth": {
 							"type": "noauth"
 						},
-						"method": "PUT",
+						"method": "POST",
 						"header": [
 							{
 								"key": "Authorization",
@@ -268,26 +214,16 @@
 							}
 						],
 						"body": {
-							"mode": "raw",
-							"raw": "{\n        \"name\": \"Pedro Rodriguez\", //cambiamos el nombre\n        \"email\": \"pedroaa@email.com\",\n        \"password\": \"1234a5678\",\n        \"role\": \"USER\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation UpdateUser($id: ID!, $name: String, $email: String, $role: String) {\r\n  updateUser(id: $id, name: $name, email: $email, role: $role) {\r\n    id\r\n    name\r\n    email\r\n    role\r\n  }\r\n}",
+								"variables": "{\r\n  \"id\": \"{{userId}}\",\r\n  \"name\": \"Pedro Rodriguez\"\r\n}"
 							}
 						},
 						"url": {
-							"raw": "https://crud-nodejs-214f-jcf1i3b3f-salazqs-projects.vercel.app/api/users/66d5f5c834822a6e553a7fcc",
-							"protocol": "https",
+							"raw": "{{base_url}}",
 							"host": [
-								"crud-nodejs-214f-jcf1i3b3f-salazqs-projects",
-								"vercel",
-								"app"
-							],
-							"path": [
-								"api",
-								"users",
-								"66d5f5c834822a6e553a7fcc"
+								"{{base_url}}"
 							]
 						},
 						"description": "This is a PUT request and it is used to overwrite an existing piece of data. For instance, after you create an entity with a POST request, you may want to modify that later. You can do that using a PUT request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful PUT request typically returns a `200 OK`, `201 Created`, or `204 No Content` response code."
@@ -312,7 +248,7 @@
 						}
 					],
 					"request": {
-						"method": "DELETE",
+						"method": "POST",
 						"header": [
 							{
 								"key": "Authorization",
@@ -321,26 +257,16 @@
 							}
 						],
 						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation DeleteUser($id: ID!) {\r\n  deleteUser(id: $id) {\r\n    id\r\n    name\r\n    email\r\n    role\r\n  }\r\n}",
+								"variables": "{\r\n  \"id\": \"{{userDelete}}\"\r\n}"
 							}
 						},
 						"url": {
-							"raw": "https://crud-nodejs-214f-jcf1i3b3f-salazqs-projects.vercel.app/api/users/66d5feedf413539bf286db7e",
-							"protocol": "https",
+							"raw": "{{base_url}}",
 							"host": [
-								"crud-nodejs-214f-jcf1i3b3f-salazqs-projects",
-								"vercel",
-								"app"
-							],
-							"path": [
-								"api",
-								"users",
-								"66d5feedf413539bf286db7e"
+								"{{base_url}}"
 							]
 						},
 						"description": "This is a DELETE request, and it is used to delete data that was previously created via a POST request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful DELETE request typically returns a `200 OK`, `202 Accepted`, or `204 No Content` response code."
@@ -348,13 +274,28 @@
 					"response": []
 				}
 			],
-			"description": "Para el manejo de las api de usuario se haran desde el rol de Admin.\n\nEn el caso del delete es necesario que se corra primero el obtener usuarios y darle el id del usuario que se desea eliminar. Aqui deja la indicacion del cambio que se debe de hacer en la url en caso de que el usuario puesto en esta ya no exista:\n\n- StartFragment[https://crud-nodejs-214f-jcf1i3b3f-salazqs-projects.vercel.app/api/users/{Aqui](https://StartFragmenthttps://crud-nodejs-214f-jcf1i3b3f-salazqs-projects.vercel.app/api/users/{Aqui)](https://crud-nodejs-214f-jcf1i3b3f-salazqs-projects.vercel.app/api/users/%7BAqui%5D(https://StartFragmenthttps://crud-nodejs-214f-jcf1i3b3f-salazqs-projects.vercel.app/api/users/%7BAqui)) se pone el id del usuario}"
+			"description": "Para el manejo de las api de usuario se haran desde el rol de Admin."
 		},
 		{
 			"name": "Comentarios",
 			"item": [
 				{
 					"name": "crear comentario",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"let parentCommentId = jsonData.data.createComment.id;\r",
+									"pm.collectionVariables.set(\"parentCommentId\", parentCommentId);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -368,25 +309,16 @@
 							}
 						],
 						"body": {
-							"mode": "raw",
-							"raw": "{\r\n        \"comment\": \"Amo a Pedro mucho\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation CreateComment($comment: String!, $userId: ID!, $parentCommentId: ID) {\r\n  createComment(comment: $comment, userId: $userId, parentCommentId: $parentCommentId) {\r\n    id\r\n    comment\r\n    userId\r\n    parentCommentId\r\n  }\r\n}",
+								"variables": "{\r\n  \"comment\": \"Amo a Roberto muyyyyyyy\",\r\n  \"userId\": \"{{userId}}\",\r\n  \"parentCommentId\": null\r\n}"
 							}
 						},
 						"url": {
-							"raw": "https://crud-nodejs-214f-ms9bklbed-salazqs-projects.vercel.app/api/comments",
-							"protocol": "https",
+							"raw": "{{base_url}}",
 							"host": [
-								"crud-nodejs-214f-ms9bklbed-salazqs-projects",
-								"vercel",
-								"app"
-							],
-							"path": [
-								"api",
-								"comments"
+								"{{base_url}}"
 							]
 						}
 					},
@@ -394,45 +326,21 @@
 				},
 				{
 					"name": "crear comentario 2",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{token}}",
-								"type": "text"
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"let parentCommentId = jsonData.data.createComment.id;\r",
+									"pm.collectionVariables.set(\"commentDelete\", parentCommentId);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
 							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n        \"comment\": \"Ya no amo a Pedro\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://crud-nodejs-214f-ms9bklbed-salazqs-projects.vercel.app/api/comments",
-							"protocol": "https",
-							"host": [
-								"crud-nodejs-214f-ms9bklbed-salazqs-projects",
-								"vercel",
-								"app"
-							],
-							"path": [
-								"api",
-								"comments"
-							]
 						}
-					},
-					"response": []
-				},
-				{
-					"name": "crear comentario 3",
+					],
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -446,25 +354,16 @@
 							}
 						],
 						"body": {
-							"mode": "raw",
-							"raw": "{\r\n        \"comment\": \"Ya no amo a Pedro segundaaa\",\r\n        \"parentCommentId\": \"66d5fd8a3a409a52515a17b5\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation CreateComment($comment: String!, $userId: ID!, $parentCommentId: ID) {\r\n  createComment(comment: $comment, userId: $userId, parentCommentId: $parentCommentId) {\r\n    id\r\n    comment\r\n    userId\r\n    parentCommentId\r\n  }\r\n}",
+								"variables": "{\r\n  \"comment\": \"YOOO lo amo menossss\",\r\n  \"userId\": \"{{userId}}\",\r\n  \"parentCommentId\": \"{{parentCommentId}}\"\r\n}"
 							}
 						},
 						"url": {
-							"raw": "https://crud-nodejs-214f-ms9bklbed-salazqs-projects.vercel.app/api/comments",
-							"protocol": "https",
+							"raw": "{{base_url}}",
 							"host": [
-								"crud-nodejs-214f-ms9bklbed-salazqs-projects",
-								"vercel",
-								"app"
-							],
-							"path": [
-								"api",
-								"comments"
+								"{{base_url}}"
 							]
 						}
 					},
@@ -486,14 +385,11 @@
 							}
 						}
 					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"auth": {
 							"type": "noauth"
 						},
-						"method": "GET",
+						"method": "POST",
 						"header": [
 							{
 								"key": "Authorization",
@@ -502,25 +398,16 @@
 							}
 						],
 						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
+							"mode": "graphql",
+							"graphql": {
+								"query": "query Comments {\r\n  comments {\r\n    id\r\n    comment\r\n    userId\r\n    parentCommentId\r\n    replies {\r\n      id\r\n    }\r\n    reactions {\r\n      id\r\n    }\r\n  }\r\n}",
+								"variables": ""
 							}
 						},
 						"url": {
-							"raw": "https://crud-nodejs-214f-ms9bklbed-salazqs-projects.vercel.app/api/comments",
-							"protocol": "https",
+							"raw": "{{base_url}}",
 							"host": [
-								"crud-nodejs-214f-ms9bklbed-salazqs-projects",
-								"vercel",
-								"app"
-							],
-							"path": [
-								"api",
-								"comments"
+								"{{base_url}}"
 							]
 						},
 						"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
@@ -543,14 +430,11 @@
 							}
 						}
 					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"auth": {
 							"type": "noauth"
 						},
-						"method": "GET",
+						"method": "POST",
 						"header": [
 							{
 								"key": "Authorization",
@@ -559,26 +443,16 @@
 							}
 						],
 						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
+							"mode": "graphql",
+							"graphql": {
+								"query": "query Comment($id: ID!) {\r\n  comment(id: $id) {\r\n    id\r\n    comment\r\n    userId\r\n    parentCommentId\r\n    replies {\r\n      id\r\n    }\r\n    reactions {\r\n      id\r\n    }\r\n  }\r\n}",
+								"variables": "{\r\n  \"id\": \"{{parentCommentId}}\"\r\n}"
 							}
 						},
 						"url": {
-							"raw": "https://crud-nodejs-214f-ms9bklbed-salazqs-projects.vercel.app/api/comments/66d5fd8a3a409a52515a17b5",
-							"protocol": "https",
+							"raw": "{{base_url}}",
 							"host": [
-								"crud-nodejs-214f-ms9bklbed-salazqs-projects",
-								"vercel",
-								"app"
-							],
-							"path": [
-								"api",
-								"comments",
-								"66d5fd8a3a409a52515a17b5"
+								"{{base_url}}"
 							]
 						},
 						"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
@@ -606,7 +480,7 @@
 						"auth": {
 							"type": "noauth"
 						},
-						"method": "PUT",
+						"method": "POST",
 						"header": [
 							{
 								"key": "Authorization",
@@ -615,26 +489,16 @@
 							}
 						],
 						"body": {
-							"mode": "raw",
-							"raw": "{\n        \"comment\": \"Ahora si amo a Pedro\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation UpdateComment($id: ID!, $comment: String!, $userId: ID!, $parentCommentId: ID) {\r\n  updateComment(id: $id, comment: $comment, userId: $userId, parentCommentId: $parentCommentId) {\r\n    id\r\n    comment\r\n    userId\r\n    parentCommentId\r\n  }\r\n}",
+								"variables": "{\r\n  \"id\": \"{{parentCommentId}}\",\r\n  \"comment\": \"Ahora si que no amo a roberto cabro\",\r\n  \"userId\": \"{{userId}}\", \r\n  \"parentCommentId\": null\r\n}"
 							}
 						},
 						"url": {
-							"raw": "https://crud-nodejs-214f-ms9bklbed-salazqs-projects.vercel.app/api/comments/66d5fdf23a409a52515a17b8",
-							"protocol": "https",
+							"raw": "{{base_url}}",
 							"host": [
-								"crud-nodejs-214f-ms9bklbed-salazqs-projects",
-								"vercel",
-								"app"
-							],
-							"path": [
-								"api",
-								"comments",
-								"66d5fdf23a409a52515a17b8"
+								"{{base_url}}"
 							]
 						},
 						"description": "This is a PUT request and it is used to overwrite an existing piece of data. For instance, after you create an entity with a POST request, you may want to modify that later. You can do that using a PUT request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful PUT request typically returns a `200 OK`, `201 Created`, or `204 No Content` response code."
@@ -659,7 +523,7 @@
 						}
 					],
 					"request": {
-						"method": "DELETE",
+						"method": "POST",
 						"header": [
 							{
 								"key": "Authorization",
@@ -668,26 +532,16 @@
 							}
 						],
 						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation DeleteComment($id: ID!, $userId: ID!) {\r\n  deleteComment(id: $id, userId: $userId) {\r\n    id\r\n    comment\r\n    userId\r\n    parentCommentId\r\n  }\r\n}",
+								"variables": "{\r\n  \"id\": \"{{commentDelete}}\",\r\n  \"userId\": \"{{userId}}\" \r\n}"
 							}
 						},
 						"url": {
-							"raw": "https://crud-nodejs-214f-ms9bklbed-salazqs-projects.vercel.app/api/comments/66d6060fc399536575834e83",
-							"protocol": "https",
+							"raw": "{{base_url}}",
 							"host": [
-								"crud-nodejs-214f-ms9bklbed-salazqs-projects",
-								"vercel",
-								"app"
-							],
-							"path": [
-								"api",
-								"comments",
-								"66d6060fc399536575834e83"
+								"{{base_url}}"
 							]
 						},
 						"description": "This is a DELETE request, and it is used to delete data that was previously created via a POST request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful DELETE request typically returns a `200 OK`, `202 Accepted`, or `204 No Content` response code."
@@ -695,13 +549,28 @@
 					"response": []
 				}
 			],
-			"description": "Para el manejo de las api de comentarios se haran desde el rol de Admin.  \nEn el caso del delete es necesario que se corra primero el obtener comentarios y darle el id del comentario que se desea eliminar. Aqui deja la indicacion del cambio que se debe de hacer en la url en caso de que el comentario puesto en esta ya no exista:\n\n- \\[StartFragment[https://crud-nodejs-214f-ms9bklbed-salazqs-projects.vercel.app/api/comments/{]](https://crud-nodejs-214f-ms9bklbed-salazqs-projects.vercel.app/api/comments/%7B%5D)([https://StartFragmenthttps://crud-nodejs-214f-ms9bklbed-salazqs-projects.vercel.app/api/comments/{ID](https://StartFragmenthttps://crud-nodejs-214f-ms9bklbed-salazqs-projects.vercel.app/api/comments/{ID) del comentario a eliminar})"
+			"description": "Para el manejo de las api de comentarios se haran desde el rol de Admin."
 		},
 		{
 			"name": "Reacciones",
 			"item": [
 				{
 					"name": "crear reaccion",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"let reactionId = jsonData.data.createReaction.id;\r",
+									"pm.collectionVariables.set(\"reactionId\", reactionId);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -715,25 +584,16 @@
 							}
 						],
 						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"tag\": \"LIKE\",\r\n    \"commentId\": \"66d5fd8a3a409a52515a17b5\" // Id del comentario al que se va a asignar la reaccion\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation CreateReaction($tag: String!, $commentId: ID!, $userId: ID!) {\r\n  createReaction(tag: $tag, commentId: $commentId, userId: $userId) {\r\n    id\r\n    tag\r\n    commentId\r\n    userId\r\n  }\r\n}",
+								"variables": "{\r\n  \"tag\": \"LIKE\",\r\n  \"commentId\": \"{{parentCommentId}}\",\r\n  \"userId\": \"{{userId}}\" \r\n}"
 							}
 						},
 						"url": {
-							"raw": "https://crud-nodejs-214f-ms9bklbed-salazqs-projects.vercel.app/api/reactions",
-							"protocol": "https",
+							"raw": "{{base_url}}",
 							"host": [
-								"crud-nodejs-214f-ms9bklbed-salazqs-projects",
-								"vercel",
-								"app"
-							],
-							"path": [
-								"api",
-								"reactions"
+								"{{base_url}}"
 							]
 						}
 					},
@@ -741,45 +601,21 @@
 				},
 				{
 					"name": "crear reaccion 2",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{token}}",
-								"type": "text"
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"let reactionId = jsonData.data.createReaction.id;\r",
+									"pm.collectionVariables.set(\"reactionDelete\", reactionId);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
 							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"tag\": \"LOVE\",\r\n    \"commentId\": \"66d5fd8a3a409a52515a17b5\" // Id del comentario al que se va a asignar la reaccion\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://crud-nodejs-214f-ms9bklbed-salazqs-projects.vercel.app/api/reactions",
-							"protocol": "https",
-							"host": [
-								"crud-nodejs-214f-ms9bklbed-salazqs-projects",
-								"vercel",
-								"app"
-							],
-							"path": [
-								"api",
-								"reactions"
-							]
 						}
-					},
-					"response": []
-				},
-				{
-					"name": "crear reaccion 3",
+					],
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -793,25 +629,16 @@
 							}
 						],
 						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"tag\": \"DISLIKE\",\r\n    \"commentId\": \"66d5fd8a3a409a52515a17b5\" // Id del comentario al que se va a asignar la reaccion\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation CreateReaction($tag: String!, $commentId: ID!, $userId: ID!) {\r\n  createReaction(tag: $tag, commentId: $commentId, userId: $userId) {\r\n    id\r\n    tag\r\n    commentId\r\n    userId\r\n  }\r\n}",
+								"variables": "{\r\n  \"tag\": \"LOVE\",\r\n  \"commentId\": \"{{parentCommentId}}\",\r\n  \"userId\": \"{{userId}}\" \r\n}"
 							}
 						},
 						"url": {
-							"raw": "https://crud-nodejs-214f-ms9bklbed-salazqs-projects.vercel.app/api/reactions",
-							"protocol": "https",
+							"raw": "{{base_url}}",
 							"host": [
-								"crud-nodejs-214f-ms9bklbed-salazqs-projects",
-								"vercel",
-								"app"
-							],
-							"path": [
-								"api",
-								"reactions"
+								"{{base_url}}"
 							]
 						}
 					},
@@ -833,14 +660,11 @@
 							}
 						}
 					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"auth": {
 							"type": "noauth"
 						},
-						"method": "GET",
+						"method": "POST",
 						"header": [
 							{
 								"key": "Authorization",
@@ -849,25 +673,16 @@
 							}
 						],
 						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
+							"mode": "graphql",
+							"graphql": {
+								"query": "query Reactions {\r\n  reactions {\r\n    id\r\n    tag\r\n    commentId\r\n    userId\r\n  }\r\n}",
+								"variables": ""
 							}
 						},
 						"url": {
-							"raw": "https://crud-nodejs-214f-ms9bklbed-salazqs-projects.vercel.app/api/reactions",
-							"protocol": "https",
+							"raw": "{{base_url}}",
 							"host": [
-								"crud-nodejs-214f-ms9bklbed-salazqs-projects",
-								"vercel",
-								"app"
-							],
-							"path": [
-								"api",
-								"reactions"
+								"{{base_url}}"
 							]
 						},
 						"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
@@ -890,14 +705,11 @@
 							}
 						}
 					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"auth": {
 							"type": "noauth"
 						},
-						"method": "GET",
+						"method": "POST",
 						"header": [
 							{
 								"key": "Authorization",
@@ -906,26 +718,16 @@
 							}
 						],
 						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
+							"mode": "graphql",
+							"graphql": {
+								"query": "query Reaction($id: ID!) {\r\n  reaction(id: $id) {\r\n    id\r\n    tag\r\n    commentId\r\n    userId\r\n  }\r\n}",
+								"variables": "{\r\n  \"id\": \"66d60777c399536575834e8c\"\r\n}"
 							}
 						},
 						"url": {
-							"raw": "https://crud-nodejs-214f-ms9bklbed-salazqs-projects.vercel.app/api/reactions/66d60777c399536575834e8c",
-							"protocol": "https",
+							"raw": "{{base_url}}",
 							"host": [
-								"crud-nodejs-214f-ms9bklbed-salazqs-projects",
-								"vercel",
-								"app"
-							],
-							"path": [
-								"api",
-								"reactions",
-								"66d60777c399536575834e8c"
+								"{{base_url}}"
 							]
 						},
 						"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
@@ -950,7 +752,7 @@
 						}
 					],
 					"request": {
-						"method": "DELETE",
+						"method": "POST",
 						"header": [
 							{
 								"key": "Authorization",
@@ -959,26 +761,16 @@
 							}
 						],
 						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation DeleteReaction($id: ID!, $userId: ID!) {\r\n  deleteReaction(id: $id, userId: $userId) {\r\n    id\r\n    tag\r\n    commentId\r\n    userId\r\n  }\r\n}",
+								"variables": "{\r\n  \"id\": \"{{reactionDelete}}\",\r\n  \"userId\": \"{{userId}}\"\r\n}"
 							}
 						},
 						"url": {
-							"raw": "https://crud-nodejs-214f-ms9bklbed-salazqs-projects.vercel.app/api/reactions/66d607aec399536575834e91",
-							"protocol": "https",
+							"raw": "{{base_url}}",
 							"host": [
-								"crud-nodejs-214f-ms9bklbed-salazqs-projects",
-								"vercel",
-								"app"
-							],
-							"path": [
-								"api",
-								"reactions",
-								"66d607aec399536575834e91"
+								"{{base_url}}"
 							]
 						},
 						"description": "This is a DELETE request, and it is used to delete data that was previously created via a POST request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful DELETE request typically returns a `200 OK`, `202 Accepted`, or `204 No Content` response code."
@@ -986,13 +778,13 @@
 					"response": []
 				}
 			],
-			"description": "Para el manejo de las api de reacciones se haran desde el rol de Admin.  \nEn el caso del delete es necesario que se corra primero el obtener reacciones y darle el id de la reacciónque se desea eliminar. Aqui deja la indicacion del cambio que se debe de hacer en la url en caso de que la reacción puesto en esta ya no exista:\n\n- [StartFragmenthttps://crud-nodejs-214f-ms9bklbed-salazqs-projects.vercel.app/api/reactions/](https://StartFragmenthttps://crud-nodejs-214f-ms9bklbed-salazqs-projects.vercel.app/api/reactions/{id reaccion a elimnar})"
+			"description": "Para el manejo de las api de reacciones se haran desde el rol de Admin."
 		},
 		{
 			"name": "Mostrar informacion final",
 			"item": [
 				{
-					"name": "Obtener usuarios",
+					"name": "Obtener comentarios Copy",
 					"event": [
 						{
 							"listen": "test",
@@ -1007,14 +799,11 @@
 							}
 						}
 					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"auth": {
 							"type": "noauth"
 						},
-						"method": "GET",
+						"method": "POST",
 						"header": [
 							{
 								"key": "Authorization",
@@ -1023,25 +812,16 @@
 							}
 						],
 						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
+							"mode": "graphql",
+							"graphql": {
+								"query": "query Comments {\r\n  comments {\r\n    id\r\n    comment\r\n    userId\r\n    parentCommentId\r\n    replies {\r\n      id\r\n    }\r\n    reactions {\r\n      id\r\n    }\r\n  }\r\n}",
+								"variables": ""
 							}
 						},
 						"url": {
-							"raw": "https://crud-nodejs-214f-jcf1i3b3f-salazqs-projects.vercel.app/api/users",
-							"protocol": "https",
+							"raw": "{{base_url}}",
 							"host": [
-								"crud-nodejs-214f-jcf1i3b3f-salazqs-projects",
-								"vercel",
-								"app"
-							],
-							"path": [
-								"api",
-								"users"
+								"{{base_url}}"
 							]
 						},
 						"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
@@ -1049,7 +829,7 @@
 					"response": []
 				},
 				{
-					"name": "Obtener comentarios",
+					"name": "Obtener usuarios Copy",
 					"event": [
 						{
 							"listen": "test",
@@ -1064,14 +844,11 @@
 							}
 						}
 					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"auth": {
 							"type": "noauth"
 						},
-						"method": "GET",
+						"method": "POST",
 						"header": [
 							{
 								"key": "Authorization",
@@ -1080,25 +857,16 @@
 							}
 						],
 						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
+							"mode": "graphql",
+							"graphql": {
+								"query": "query Users {\r\n    users {\r\n        id\r\n        name\r\n        email\r\n        role\r\n    }\r\n}",
+								"variables": ""
 							}
 						},
 						"url": {
-							"raw": "https://crud-nodejs-214f-ms9bklbed-salazqs-projects.vercel.app/api/comments",
-							"protocol": "https",
+							"raw": "{{base_url}}",
 							"host": [
-								"crud-nodejs-214f-ms9bklbed-salazqs-projects",
-								"vercel",
-								"app"
-							],
-							"path": [
-								"api",
-								"comments"
+								"{{base_url}}"
 							]
 						},
 						"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
@@ -1106,7 +874,7 @@
 					"response": []
 				},
 				{
-					"name": "Obtener reacciones",
+					"name": "Obtener reacciones Copy",
 					"event": [
 						{
 							"listen": "test",
@@ -1121,14 +889,11 @@
 							}
 						}
 					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"auth": {
 							"type": "noauth"
 						},
-						"method": "GET",
+						"method": "POST",
 						"header": [
 							{
 								"key": "Authorization",
@@ -1137,25 +902,16 @@
 							}
 						],
 						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
+							"mode": "graphql",
+							"graphql": {
+								"query": "query Reactions {\r\n  reactions {\r\n    id\r\n    tag\r\n    commentId\r\n    userId\r\n  }\r\n}",
+								"variables": ""
 							}
 						},
 						"url": {
-							"raw": "https://crud-nodejs-214f-ms9bklbed-salazqs-projects.vercel.app/api/comments",
-							"protocol": "https",
+							"raw": "{{base_url}}",
 							"host": [
-								"crud-nodejs-214f-ms9bklbed-salazqs-projects",
-								"vercel",
-								"app"
-							],
-							"path": [
-								"api",
-								"comments"
+								"{{base_url}}"
 							]
 						},
 						"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
@@ -1188,6 +944,41 @@
 	"variable": [
 		{
 			"key": "token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "base_url",
+			"value": "https://crud-nodejs-graphql.vercel.app/graphql",
+			"type": "string"
+		},
+		{
+			"key": "userId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "userDelete",
+			"value": "66e0df95d11a2590d71c731c",
+			"type": "string"
+		},
+		{
+			"key": "parentCommentId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "commentDelete",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "reactionId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "reactionDelete",
 			"value": "",
 			"type": "string"
 		}
