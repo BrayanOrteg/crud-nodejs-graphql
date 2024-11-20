@@ -721,7 +721,7 @@
 							"mode": "graphql",
 							"graphql": {
 								"query": "query Reaction($id: ID!) {\r\n  reaction(id: $id) {\r\n    id\r\n    tag\r\n    commentId\r\n    userId\r\n  }\r\n}",
-								"variables": "{\r\n  \"id\": \"66d60777c399536575834e8c\"\r\n}"
+								"variables": "{\r\n  \"id\": \"{{reactionId}}\"\r\n}"
 							}
 						},
 						"url": {
