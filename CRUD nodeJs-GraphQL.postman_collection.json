@@ -1,10 +1,10 @@
 {
 	"info": {
-		"_postman_id": "9ecf5dd6-cd47-4a81-8619-3a131aae407c",
+		"_postman_id": "54ae34bc-4402-4743-b912-95f5ec771b2b",
 		"name": "CRUD nodeJs-GraphQL",
 		"description": "Para correr todos los llamados puestos en esta carpeta primero se necesita correr el Login.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "37433479"
+		"_exporter_id": "34538616"
 	},
 	"item": [
 		{
@@ -33,6 +33,45 @@
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n  \"operationName\": \"Login\",\r\n  \"query\": \"mutation Login { login(email: \\\"admin@gmail.com\\\", password: \\\"admin1234\\\") { token user } }\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}",
+							"host": [
+								"{{base_url}}"
+							]
+						},
+						"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+					},
+					"response": []
+				},
+				{
+					"name": "Login Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"let token = jsonData.data.login.token; ",
+									"pm.collectionVariables.set(\"token\", token); ",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"operationName\": \"Login\",\r\n  \"query\": \"mutation Login { login(email: \\\"pedrobc@email.com\\\", password: \\\"1234a5678\\\") { token user } }\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -311,8 +350,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation CreateComment($comment: String!, $userId: ID!, $parentCommentId: ID) {\r\n  createComment(comment: $comment, userId: $userId, parentCommentId: $parentCommentId) {\r\n    id\r\n    comment\r\n    userId\r\n    parentCommentId\r\n  }\r\n}",
-								"variables": "{\r\n  \"comment\": \"Amo a Roberto muyyyyyyy\",\r\n  \"userId\": \"{{userId}}\",\r\n  \"parentCommentId\": null\r\n}"
+								"query": "mutation CreateComment($comment: String!, $parentCommentId: ID) {\r\n  createComment(comment: $comment, parentCommentId: $parentCommentId) {\r\n    id\r\n    comment\r\n    userId\r\n    parentCommentId\r\n  }\r\n}",
+								"variables": "{\r\n  \"comment\": \"Amo a Roberto muyyyyyyy\",\r\n  \"parentCommentId\": null\r\n}"
 							}
 						},
 						"url": {
@@ -356,8 +395,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation CreateComment($comment: String!, $userId: ID!, $parentCommentId: ID) {\r\n  createComment(comment: $comment, userId: $userId, parentCommentId: $parentCommentId) {\r\n    id\r\n    comment\r\n    userId\r\n    parentCommentId\r\n  }\r\n}",
-								"variables": "{\r\n  \"comment\": \"YOOO lo amo menossss\",\r\n  \"userId\": \"{{userId}}\",\r\n  \"parentCommentId\": \"{{parentCommentId}}\"\r\n}"
+								"query": "mutation CreateComment($comment: String!, $parentCommentId: ID) {\r\n  createComment(comment: $comment, parentCommentId: $parentCommentId) {\r\n    id\r\n    comment\r\n    userId\r\n    parentCommentId\r\n  }\r\n}",
+								"variables": "{\r\n  \"comment\": \"YOOO lo amo menossss\",\r\n  \"parentCommentId\": \"{{parentCommentId}}\"\r\n}"
 							}
 						},
 						"url": {
@@ -400,7 +439,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query Comments {\r\n  comments {\r\n    id\r\n    comment\r\n    userId\r\n    parentCommentId\r\n    replies {\r\n      id\r\n    }\r\n    reactions {\r\n      id\r\n    }\r\n  }\r\n}",
+								"query": "query Comments {\r\n  comments {\r\n    id\r\n    comment\r\n    userId\r\n    parentCommentId\r\n    replies\r\n    reactions\r\n  }\r\n}\r\n\r\n\r\n\r\n",
 								"variables": ""
 							}
 						},
@@ -445,7 +484,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query Comment($id: ID!) {\r\n  comment(id: $id) {\r\n    id\r\n    comment\r\n    userId\r\n    parentCommentId\r\n    replies {\r\n      id\r\n    }\r\n    reactions {\r\n      id\r\n    }\r\n  }\r\n}",
+								"query": "query Comment($id: ID!) {\r\n  comment(id: $id) {\r\n    id\r\n    comment\r\n    userId\r\n    parentCommentId\r\n    replies\r\n    reactions\r\n  }\r\n}",
 								"variables": "{\r\n  \"id\": \"{{parentCommentId}}\"\r\n}"
 							}
 						},
@@ -491,8 +530,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation UpdateComment($id: ID!, $comment: String!, $userId: ID!, $parentCommentId: ID) {\r\n  updateComment(id: $id, comment: $comment, userId: $userId, parentCommentId: $parentCommentId) {\r\n    id\r\n    comment\r\n    userId\r\n    parentCommentId\r\n  }\r\n}",
-								"variables": "{\r\n  \"id\": \"{{parentCommentId}}\",\r\n  \"comment\": \"Ahora si que no amo a roberto cabro\",\r\n  \"userId\": \"{{userId}}\", \r\n  \"parentCommentId\": null\r\n}"
+								"query": "mutation UpdateComment($id: ID!, $comment: String!,$parentCommentId: ID) {\r\n  updateComment(id: $id, comment: $comment, parentCommentId: $parentCommentId) {\r\n    id\r\n    comment\r\n    userId\r\n    parentCommentId\r\n  }\r\n}",
+								"variables": "{\r\n  \"id\": \"{{parentCommentId}}\",\r\n  \"comment\": \"Ahora si que no amo a roberto cabro\", \r\n  \"parentCommentId\": null\r\n}"
 							}
 						},
 						"url": {
@@ -534,8 +573,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation DeleteComment($id: ID!, $userId: ID!) {\r\n  deleteComment(id: $id, userId: $userId) {\r\n    id\r\n    comment\r\n    userId\r\n    parentCommentId\r\n  }\r\n}",
-								"variables": "{\r\n  \"id\": \"{{commentDelete}}\",\r\n  \"userId\": \"{{userId}}\" \r\n}"
+								"query": "mutation DeleteComment($id: ID!) {\r\n  deleteComment(id: $id) {\r\n    id\r\n    comment\r\n    userId\r\n    parentCommentId\r\n  }\r\n}",
+								"variables": "{\r\n  \"id\": \"{{commentDelete}}\"\r\n}"
 							}
 						},
 						"url": {
@@ -586,8 +625,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation CreateReaction($tag: String!, $commentId: ID!, $userId: ID!) {\r\n  createReaction(tag: $tag, commentId: $commentId, userId: $userId) {\r\n    id\r\n    tag\r\n    commentId\r\n    userId\r\n  }\r\n}",
-								"variables": "{\r\n  \"tag\": \"LIKE\",\r\n  \"commentId\": \"{{parentCommentId}}\",\r\n  \"userId\": \"{{userId}}\" \r\n}"
+								"query": "mutation CreateReaction($tag: String!, $commentId: ID!) {\r\n  createReaction(tag: $tag, commentId: $commentId) {\r\n    id\r\n    tag\r\n    commentId\r\n    userId\r\n  }\r\n}",
+								"variables": "{\r\n  \"tag\": \"LIKE\",\r\n  \"commentId\": \"{{parentCommentId}}\"\r\n}"
 							}
 						},
 						"url": {
@@ -631,8 +670,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation CreateReaction($tag: String!, $commentId: ID!, $userId: ID!) {\r\n  createReaction(tag: $tag, commentId: $commentId, userId: $userId) {\r\n    id\r\n    tag\r\n    commentId\r\n    userId\r\n  }\r\n}",
-								"variables": "{\r\n  \"tag\": \"LOVE\",\r\n  \"commentId\": \"{{parentCommentId}}\",\r\n  \"userId\": \"{{userId}}\" \r\n}"
+								"query": "mutation CreateReaction($tag: String!, $commentId: ID!) {\r\n  createReaction(tag: $tag, commentId: $commentId) {\r\n    id\r\n    tag\r\n    commentId\r\n    userId\r\n  }\r\n}",
+								"variables": "{\r\n  \"tag\": \"LOVE\",\r\n  \"commentId\": \"{{parentCommentId}}\"\r\n}"
 							}
 						},
 						"url": {
@@ -763,8 +802,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "mutation DeleteReaction($id: ID!, $userId: ID!) {\r\n  deleteReaction(id: $id, userId: $userId) {\r\n    id\r\n    tag\r\n    commentId\r\n    userId\r\n  }\r\n}",
-								"variables": "{\r\n  \"id\": \"{{reactionDelete}}\",\r\n  \"userId\": \"{{userId}}\"\r\n}"
+								"query": "mutation DeleteReaction($id: ID!) {\r\n  deleteReaction(id: $id) {\r\n    id\r\n    tag\r\n    commentId\r\n    userId\r\n  }\r\n}",
+								"variables": "{\r\n  \"id\": \"{{reactionDelete}}\"\r\n}"
 							}
 						},
 						"url": {
@@ -814,7 +853,7 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query Comments {\r\n  comments {\r\n    id\r\n    comment\r\n    userId\r\n    parentCommentId\r\n    replies {\r\n      id\r\n    }\r\n    reactions {\r\n      id\r\n    }\r\n  }\r\n}",
+								"query": "query Comments {\r\n  comments {\r\n    id\r\n    comment\r\n    userId\r\n    parentCommentId\r\n    replies\r\n    reactions\r\n  }\r\n}",
 								"variables": ""
 							}
 						},
