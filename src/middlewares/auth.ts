@@ -1,13 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import jwt, {TokenExpiredError} from "jsonwebtoken";
 
-
-/**
- * Middleware para autenticar solicitudes usando JWT
- * @param req - El objeto de solicitud
- * @param res - El objeto de respuesta
- * @param next - La función para pasar al siguiente middleware
- */
+// Middleware para autenticar solicitudes usando JWT
 const auth = async (req: Request, res: Response, next: NextFunction) => {
     try {
 

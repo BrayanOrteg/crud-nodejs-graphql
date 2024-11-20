@@ -17,8 +17,8 @@ export const typeDefs = gql`
     comment: String!
     userId: ID!
     parentCommentId: ID
-    replies: [Comment]
-    reactions: [Reaction]
+    replies: [ID]
+    reactions: [ID]
   }
 
   type Reaction {
